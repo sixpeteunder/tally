@@ -5,4 +5,5 @@ namespace Tally.Web.Models;
 public class User : IdentityUser
 {
     public ICollection<Poll> Polls { get; set; } = new List<Poll>();
+    public UserSettings? Settings { get; set; }
 }

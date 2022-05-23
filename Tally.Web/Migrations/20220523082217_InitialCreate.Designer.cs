@@ -8,10 +8,10 @@ using Tally.Web.Data;
 
 #nullable disable
 
-namespace Web.Data.Migrations
+namespace Tally.Web.Migrations
 {
     [DbContext(typeof(TallyContext))]
-    [Migration("20220522204942_InitialCreate")]
+    [Migration("20220523082217_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -354,6 +354,9 @@ namespace Web.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("SettingsId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -370,7 +373,28 @@ namespace Web.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("SettingsId");
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Tally.Web.Models.UserSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ThemeCdn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ThemeName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ThemeName");
+
+                    b.ToTable("UserSettings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -491,6 +515,17 @@ namespace Web.Data.Migrations
                         .HasForeignKey("CreatorId");
 
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("Tally.Web.Models.User", b =>
+                {
+                    b.HasOne("Tally.Web.Models.UserSettings", "Settings")
+                        .WithMany()
+                        .HasForeignKey("SettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Settings");
                 });
 
             modelBuilder.Entity("Tally.Web.Models.Option", b =>

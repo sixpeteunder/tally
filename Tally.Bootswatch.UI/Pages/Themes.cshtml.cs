@@ -6,6 +6,9 @@ namespace Tally.Bootswatch.UI.Pages;
 
 public class ThemesModel : PageModel
 {
+    [BindProperty(SupportsGet = true)] 
+    public string User { get; set; } = null!;
+    
     [BindProperty] 
     public ThemeData ThemeData { get; private set; } = null!;
     

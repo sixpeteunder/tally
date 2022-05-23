@@ -11,6 +11,7 @@ public class TallyContext : IdentityDbContext<User>
     public DbSet<CachedVote> CachedVotes => Set<CachedVote>();
     public DbSet<LiveVote> LiveVotes => Set<LiveVote>();
     public DbSet<Option> Options => Set<Option>();
+    public DbSet<UserSettings> UserSettings => Set<UserSettings>();
     public TallyContext(DbContextOptions<TallyContext> options)
         : base(options)
     {
@@ -19,6 +20,7 @@ public class TallyContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
         builder.Entity<CachedVote>().HasIndex(v => v.Channel);
         builder.Entity<CachedVote>()
             .HasIndex(v => new { v.Channel, v.OptionId })
@@ -39,5 +41,7 @@ public class TallyContext : IdentityDbContext<User>
         builder.Entity<LiveVote>()
             .HasIndex(v => new { v.Channel, v.UserIdentifier })
             .IsUnique();
+
+        builder.Entity<UserSettings>().HasIndex(s => s.ThemeName);
     }
 }

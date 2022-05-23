@@ -1,4 +1,9 @@
-﻿@page "/themes"
+﻿@page "{user}/themes"
+@using System.Text.Json
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
 @model Tally.Bootswatch.UI.Pages.ThemesModel
 @{
     ViewData["Title"] = "Themes";
@@ -11,24 +16,85 @@
         <p class="text-muted">Powered by <a href="https://bootswatch.com">Bootswatch</a>.</p>
     </div>
     
-    <div class="row g-2">
+    <div id="theme-list" class="row g-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="https://picsum.photos/seed/default/1000/600" class="card-img-top" alt="Bootstrap default theme thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">Bootstrap default</h5>
+                    <p class="card-text">The original.</p>
+                    <button class="btn btn-outline-primary" data-theme-name="Bootstrap Default" 
+                            data-theme-cdn="/lib/bootstrap/dist/css/bootstrap.min.css">
+                        Select
+                    </button>
+                    <a href="https://getbootstrap.com" class="btn btn-outline-secondary">Go to Website</a>
+                </div>
+            </div>
+        </div>
         @foreach (var theme in Model.ThemeData.Themes)
         {
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card">
-                    <img src="@theme.Thumbnail" class="card-img-top" alt="@theme.Name thumbnail">
+                    <img src="@theme.Thumbnail" class="card-img-top" alt="@theme.Name theme thumbnail">
                     <div class="card-body">
                         <h5 class="card-title">@theme.Name</h5>
                         <p class="card-text">@theme.Description.</p>
-                        <a href="#" class="btn btn-outline-primary">Select</a>
+                        <button class="btn btn-outline-primary" data-theme-name="@theme.Name" 
+                                data-theme-cdn="@theme.CssCdn">
+                            Select
+                        </button>
                         <a href="@theme.Preview" class="btn btn-outline-secondary">Preview</a>
                     </div>
                 </div>
             </div>
         }
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="https://picsum.photos/seed/custom/1000/600" class="card-img-top" alt="Custom theme thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">Custom (Coming Soon!)</h5>
+                    <p class="card-text">Build your own.</p>
+                    <button class="btn btn-outline-primary">Upload</button>
+                    <a href="https://bootstrap.build" class="btn btn-outline-secondary">Go to Bootstrap Build</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="text-center text-muted py-2">
-        Powered by Bootswatch.
+        Powered by <a href="https://bootswatch.com">Bootswatch</a>.
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        const endpoint = "/theme";
+        const user = "@Model.User";
+        const themeList = document.getElementById("theme-list");
+        themeList.addEventListener("click", async ({ target }) => {
+           const { ok, status, statusText } = await fetch(endpoint, {
+               method: "POST",
+               body: JSON.stringify({
+                   user,
+                   name: target.dataset.themeName,
+                   cdn: target.dataset.themeCdn,
+               }),
+               headers: {
+                   "Accept": "application/json",
+                   "Content-type": "application/json",
+                   "X-Tally-User-Id": user,
+               }
+           });
+           
+           if (ok) {
+            console.log("Theme set successfully");
+            window.location = window.location; // Reload
+           } else if(status === 404) {
+             console.log(`Endpoint "${endpoint}" not found. Have you configured your routes?`); 
+           } else {
+             console.log(`Request to set theme failed with error ${status}: ${statusText}`);   
+           }
+        });
+    </script>
+}

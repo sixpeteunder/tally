@@ -1,17 +1,39 @@
-﻿<!DOCTYPE html>
+﻿@using Tally.Web.Models
+@inject TallyContext TallyContext
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var userId = user?.Id;
+    
+    var themeCdn = "/lib/bootstrap/dist/css/bootstrap.min.css";
+    var themeName = "Bootstrap Default";
+
+    // Only apply custom theme if the user is logged in. 
+    if (user is not null)
+    {
+        // Stop here to ensure settings are loaded
+        await TallyContext.Entry(user).Reference(u => u.Settings).LoadAsync();
+        
+        var userSettings = user.Settings ??= new();
+        themeCdn = userSettings.ThemeCdn ??= themeCdn;
+        themeName = userSettings.ThemeName ??= themeName;
+        await UserManager.UpdateAsync(user);
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="@themeCdn"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Web.styles.css" asp-append-version="true"/>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-page="/Index">Web</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,13 +43,13 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Polls/Index">Polls</a>
+                        <a class="nav-link" asp-area="" asp-page="/Polls/Index">Polls</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Themes">Themes</a>
+                        <a class="nav-link" asp-area="" asp-page="/Themes" asp-route-user="@userId">Themes (@themeName)</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -43,7 +65,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        &copy; @DateTime.Today.Year - Tally - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
 </footer>
 

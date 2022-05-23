@@ -51,5 +51,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tally.Bootswatch.UI\Tally.Bootswatch.UI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="app.db-wal" />
+      <None Remove="app.db-shm" />
     </ItemGroup>    
 </Project>

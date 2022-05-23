@@ -80,6 +80,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGitHubWebHooks(gitHubBotConfig);
     // endpoints.MapControllers();
 });
+app.MapControllers();
 app.MapRazorPages();
 app.MapHub<TallyHub>("/tally");
 app.MapHub<WebHub>("/web");
