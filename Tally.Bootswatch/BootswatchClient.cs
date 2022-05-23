@@ -12,10 +12,10 @@ public class BootswatchClient
 
     public BootswatchClient(string baseUrl = DefaultBaseUrl) => _baseUrl = baseUrl;
 
-    public async Task<ThemeResult> GetThemesAsync(int version, CancellationToken cancellationToken)
+    public async Task<ThemeData> GetThemesAsync(int version, CancellationToken cancellationToken = default)
     {
         return await _baseUrl.AppendPathSegment($"{version}.json")
-            .GetJsonAsync<ThemeResult>(cancellationToken)
+            .GetJsonAsync<ThemeData>(cancellationToken)
             .ConfigureAwait(false);
     }
 }

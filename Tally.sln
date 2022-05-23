@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tally.Web", "Tally.Web\Tall
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tally.Bootswatch", "Tally.Bootswatch\Tally.Bootswatch.csproj", "{4D1DB2F9-7F00-404C-9BE7-B3DDC4D81F8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tally.Bootswatch.UI", "Tally.Bootswatch.UI\Tally.Bootswatch.UI.csproj", "{8CABB2BE-7F25-4689-AF2D-93736ED11060}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4D1DB2F9-7F00-404C-9BE7-B3DDC4D81F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D1DB2F9-7F00-404C-9BE7-B3DDC4D81F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D1DB2F9-7F00-404C-9BE7-B3DDC4D81F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CABB2BE-7F25-4689-AF2D-93736ED11060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CABB2BE-7F25-4689-AF2D-93736ED11060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CABB2BE-7F25-4689-AF2D-93736ED11060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CABB2BE-7F25-4689-AF2D-93736ED11060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

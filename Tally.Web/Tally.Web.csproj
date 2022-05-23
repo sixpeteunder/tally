@@ -47,5 +47,9 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\js\polls\details.g.js" />
       <_ContentIncludedByDefault Remove="wwwroot\js\polls\details.g.js.map" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tally.Bootswatch.UI\Tally.Bootswatch.UI.csproj" />
     </ItemGroup>    
 </Project>

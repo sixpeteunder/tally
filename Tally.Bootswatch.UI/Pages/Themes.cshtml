@@ -1,0 +1,34 @@
+﻿@page "/themes"
+@model Tally.Bootswatch.UI.Pages.ThemesModel
+@{
+    ViewData["Title"] = "Themes";
+}
+
+<div class="container">
+    <div class="mb-3">
+        <h1>@ViewData["Title"]</h1>
+        <p class="lead">Enhance your experience with a custom theme.</p>
+        <p class="text-muted">Powered by <a href="https://bootswatch.com">Bootswatch</a>.</p>
+    </div>
+    
+    <div class="row g-2">
+        @foreach (var theme in Model.ThemeData.Themes)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <img src="@theme.Thumbnail" class="card-img-top" alt="@theme.Name thumbnail">
+                    <div class="card-body">
+                        <h5 class="card-title">@theme.Name</h5>
+                        <p class="card-text">@theme.Description.</p>
+                        <a href="#" class="btn btn-outline-primary">Select</a>
+                        <a href="@theme.Preview" class="btn btn-outline-secondary">Preview</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center text-muted py-2">
+        Powered by Bootswatch.
+    </div>
+</div>
